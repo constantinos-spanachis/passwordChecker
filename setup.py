@@ -1,5 +1,8 @@
 from setuptools import setup, find_packages
 
+with open("requirements.txt") as file:
+	required_packages = file.read().splitlines()
+
 setup(
 	name='password-checker',
 	version='0.0.1',
@@ -17,6 +20,7 @@ setup(
 	long_description=open('README.md').read(),
 	package_dir={"": "src"},
 	python_requires=">=3.7",
+	install_requires=required_packages,
 	entry_points = {
 		"console_scripts": [
 			"check_password = password_checker.main: main_terminal"
