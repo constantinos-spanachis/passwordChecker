@@ -1,7 +1,21 @@
 import requests
 import hashlib
+import argparse
 from bs4 import BeautifulSoup
 from typing import Union, List
+
+
+def parse_arguments():
+	parser = argparse.ArgumentParser(description='Password Check arguments for console scripts')
+	parser.add_argument(
+		"-p",
+		"--passwords",
+		help="Your password that you want to check",
+		nargs="+",
+		required=True,
+		default=[]
+	)
+	return parser.parse_args()
 
 
 class PasswordChecker:
@@ -10,7 +24,7 @@ class PasswordChecker:
 	
 	def __init__(self, password: str):
 		self._password = password
-		
+	
 	def extract(self, hex5dig: str) -> requests.get:
 		"""
 		Sends a request to the api with the first 5 characters of the sha1 hexdigit string.
@@ -85,8 +99,8 @@ class PasswordChecker:
 		req_response = self.read_response(req_response)
 		breaches = self.check_pass_breaches(req_response, tail_pass)
 		return breaches
-		
-		
+
+
 def main(pass_list: List[str]) -> None:
 	"""
 	Accepts a list of passwords and checks how many times they have been breached.
@@ -100,7 +114,14 @@ def main(pass_list: List[str]) -> None:
 			print(f"{password} was found {breaches} times. You should update your password")
 		else:
 			print(f"{password} is safe")
-		
+
+
+def main_terminal():
+	args = parse_arguments()
+	if not args.passwords:
+		raise ValueError("You have not passed any passwords")
+	main(args.passwords)
+
 
 if __name__ == '__main__':
 	main(["12345", "918247"])
