@@ -116,12 +116,10 @@ def main(pass_list: List[str]) -> None:
 			print(f"{password} is safe")
 
 
-def main_terminal():
+def main_terminal() -> None:
+	"""	Uses parsed arguments and then orchestrates the execution of the program. """
 	args = parse_arguments()
 	if not args.passwords:
 		raise ValueError("You have not passed any passwords")
 	main(args.passwords)
 
-
-if __name__ == '__main__':
-	main(["12345", "918247"])
